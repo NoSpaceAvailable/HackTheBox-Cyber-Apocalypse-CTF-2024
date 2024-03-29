@@ -8,7 +8,7 @@ Normal
 Hack The Box team
 
 # Approach
-- The site is an API that provide chat service between companies and ransomware groups. It provides 3 endpoints: an endpoint to get chat ticket, and endpoint to read the chat, and one is for the flag:
+- The site is an API that provide chat service between companies and ransomware groups. It provides 3 endpoints: an endpoint to get chat ticket, an endpoint to read the chat, and one is for the flag:
   ![image](https://github.com/NoSpaceAvailable/HackTheBox-Cyber-Apocalypse-CTF-2024/assets/143888307/4294e8ed-8b6a-48ba-90b0-2220529f2e09)
 
 - The problem is: I can't use any service on it, because it requires a valid JWT token provided by backend, and the endpoint */api/v1/get_ticket* was banned.
@@ -43,9 +43,9 @@ backend backend
 - I have a JWT token now. I put it in an online decoder, and receive this:
   ![image](https://github.com/NoSpaceAvailable/HackTheBox-Cyber-Apocalypse-CTF-2024/assets/143888307/ce289f92-60ee-4d39-b48f-e2cd6e490a02)
 
-- We can see that there is a guest role asssigned to this token, so the goal is change it to admin role.
+- We can see that there is a guest role assigned to this token, so the goal is change it to admin role.
 - The backend also use a module called *python-jwt*:
-  *requirements.txt*:
+*requirements.txt*:
   ```
   uwsgi
   Flask
@@ -53,7 +53,7 @@ backend backend
   python_jwt==3.3.3
   ```
 
-- This verison has a vulnerability explained in [CVE-2022-39227](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-39227). Luckily, there is an available [POC](https://github.com/user0x1337/CVE-2022-39227) that I can use. Or you can use this script to create a fake JWT:
+- This version has a vulnerability explained in [CVE-2022-39227](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-39227). Luckily, there is an available [POC](https://github.com/user0x1337/CVE-2022-39227) that I can use. Or you can use this script to create a fake JWT:
   ```python
   def exp(token):
     [header, payload, signature] = token.split(".")
